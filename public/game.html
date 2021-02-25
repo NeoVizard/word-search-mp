@@ -6,13 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style.css">
-    <!-- <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"> -->
-    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> -->
     <title>Game</title>
 </head>
 
 <body>
     <div class="gamebox">
+        <ul class="user-list"></ul>
         <table class="letter_grid">
             <tr>
                 <td><button id="0" class="letter_b"></button></td>
@@ -34,7 +33,6 @@
         <div class="word_submit">
             <input class="word" disabled></input>
             <input class="reset_word" type="image" src="/arrow-repeat.svg" />
-            <!-- <input class="reset_word" type="image" src="{{ url_for('static', filename='arrow-repeat.svg') }}"/> -->
             <button class="add_word">Add</button>
             <h5 class="error-message"></h5>
         </div>
@@ -52,6 +50,5 @@
 </body>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/app.js"></script>
-<!-- <script src="{{ url_for('static', filename='app.js') }}"></script> -->
 
 </html>

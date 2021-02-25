@@ -1,13 +1,24 @@
 const welcome_text = document.querySelector('.welcome-text');
 const room_name = document.querySelector('.room-name');
+const user_name = document.querySelector('.user-name');
 const create_room = document.querySelector('.create-room');
 var guest_name;
 
 create_guest();
 
 create_room.addEventListener('click', (e) => {
-    console.log(room_name.value)
-    document.location.pathname = '/room/' + room_name.value
+    sessionStorage.setItem("username", user_name.value)
+
+    var xhttp = new XMLHttpRequest()
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            document.location.pathname = '/room/' + room_name.value
+        }
+    }
+    xhttp.open('POST', '/room')
+    xhttp.setRequestHeader("Content-type", "application/json")
+    xhttp.send( `{"roomName": "${room_name.value}"}` );
+
 });
 
 function create_guest() {

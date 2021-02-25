@@ -1,6 +1,7 @@
 const gamebox = document.querySelector('.gamebox')
 const scoreboard = document.querySelector('.scoreboard')
 const total_score_display = document.querySelector('.total-score')
+const user_list = document.querySelector('.user-list')
 const current_word = document.querySelector('.word')
 const error_message = document.querySelector('.error-message')
 const add_button = document.querySelector('.add_word')
@@ -11,6 +12,11 @@ const letters = document.querySelectorAll('.letter_b')
 const play_again = document.querySelector('.play-again')
 var word_list_data = []
 var res
+
+const userName = sessionStorage.getItem("username");
+const roomName = document.location.pathname.substr(6);
+
+socket = io();
 
 // Get letters for grid
 var xhttp = new XMLHttpRequest()
@@ -57,7 +63,7 @@ add_button.addEventListener('click', (e) => {
 
     // Create delete button
     const delete_img = document.createElement('img')
-    delete_img.src = 'x-circle.svg' // 'static/x-circle.svg'
+    delete_img.src = '/x-circle.svg'
     delete_img.className = 'delete_word'
     li.appendChild(delete_img)
 
@@ -104,6 +110,19 @@ check_button.addEventListener('click', (e) => {
 play_again.addEventListener('click', (e) => {
     // Reload page
     document.location.reload()
+})
+
+// SOCKET STUFF
+// Join the room
+socket.emit('joinRoom', { roomName, userName });
+
+// Get user list
+socket.on('users', (users) => {
+    if (users != null) {
+        user_list.innerHTML = `
+            ${users.map(user => `<li> ${user} </li>`).join('')}
+        `;
+    }
 })
 
 // Function to clear current word and reset the grid
