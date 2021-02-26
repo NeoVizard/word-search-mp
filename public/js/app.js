@@ -10,6 +10,7 @@ const check_button = document.querySelector('.check_words')
 const word_list = document.querySelector('.word_list')
 const letters = document.querySelectorAll('.letter_b')
 const play_again = document.querySelector('.play-again')
+const scoreLists = document.querySelector('.score-lists')
 var word_list_data = []
 var res
 
@@ -94,16 +95,8 @@ word_list.addEventListener('click', (e) => {
 
 // Submit button event listener
 check_button.addEventListener('click', (e) => {
-    var xhttp = new XMLHttpRequest()
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            res = JSON.parse(this.responseText)
-            generate_score(res)
-        }
-    }
-    xhttp.open('POST', '/words')
-    xhttp.setRequestHeader("Content-type", "application/json")
-    xhttp.send(JSON.stringify(word_list_data));
+    generate_score();
+    socket.emit('submit', word_list_data);
 })
 
 // Play Again button event listener
@@ -120,9 +113,14 @@ socket.emit('joinRoom', { roomName, userName });
 socket.on('users', (users) => {
     if (users != null) {
         user_list.innerHTML = `
-            ${users.map(user => `<li> ${user} </li>`).join('')}
+            ${users.map(user => `<li> ${user.name} </li>`).join('')}
         `;
     }
+})
+
+// Score update
+socket.on('scoreUpdate', (wordDicts) => {
+    update_scoreboard(wordDicts);
 })
 
 // Function to clear current word and reset the grid
@@ -131,64 +129,65 @@ function reset_word() {
     letters.forEach(l => l.disabled = false)
 }
 
-// Function to calculate score and display it
-function generate_score(word_dict) {
-    var words_in_list = document.querySelectorAll('li.word_in_list')
-    var score_list = document.querySelector('.score-dist')
+// Goto score page
+function generate_score() {
     gamebox.classList.add('invis')
     scoreboard.classList.remove('invis')
+}
 
-    good_words = []
-    bad_words = []
-    total_score = 0
+// Updates the scoreboard
+function update_scoreboard(userWordDicts) {
+    scoreLists.innerHTML = '';
+    Object.keys(userWordDicts).forEach(k => {
+        var wordDict = userWordDicts[k];
+        var userName = document.createElement('h3');
+        var score_list = document.createElement('ul');
 
-    words_in_list.forEach(li => {
-        w = li.innerText
-        if (word_dict[w]) {
-            good_words.push(w)
-        }
-        else {
-            bad_words.push(w)
-        }
+        good_words = Object.keys(wordDict).filter(word => wordDict[word] == true)
+        bad_words = Object.keys(wordDict).filter(word => wordDict[word] == false)
+        total_score = 0
+
+        good_words.sort(function (a, b) {
+            return b.length - a.length || // sort by length, if equal then
+                a.localeCompare(b);    // sort by dictionary order
+        })
+
+        bad_words.sort(function (a, b) {
+            return a.length - b.length || // sort by length, if equal then
+                a.localeCompare(b);    // sort by dictionary order
+        })
+
+        good_words.forEach(w => {
+            li = document.createElement('li')
+            li.classList.add('green')
+            li.innerText = w
+
+            span = document.createElement('span')
+            span.classList.add('right-float')
+            span.innerText = "+" + w.length
+            total_score += w.length
+
+            li.appendChild(span)
+            score_list.appendChild(li)
+        })
+
+        bad_words.forEach(w => {
+            li = document.createElement('li')
+            li.classList.add('red')
+            li.innerText = w
+
+            span = document.createElement('span')
+            span.classList.add('right-float')
+            span.innerText = "-1"
+            total_score -= 1
+
+            li.appendChild(span)
+            score_list.appendChild(li)
+        })
+
+        userName.innerText = k + ": " + total_score;
+
+        scoreLists.appendChild(userName);
+        scoreLists.appendChild(score_list);
     })
-
-    good_words.sort(function (a, b) {
-        return b.length - a.length || // sort by length, if equal then
-            a.localeCompare(b);    // sort by dictionary order
-    })
-
-    bad_words.sort(function (a, b) {
-        return a.length - b.length || // sort by length, if equal then
-            a.localeCompare(b);    // sort by dictionary order
-    })
-
-    good_words.forEach(w => {
-        li = document.createElement('li')
-        li.classList.add('green')
-        li.innerText = w
-
-        span = document.createElement('span')
-        span.classList.add('right-float')
-        span.innerText = "+" + w.length
-        total_score += w.length
-
-        li.appendChild(span)
-        score_list.appendChild(li)
-    })
-
-    bad_words.forEach(w => {
-        li = document.createElement('li')
-        li.classList.add('red')
-        li.innerText = w
-
-        span = document.createElement('span')
-        span.classList.add('right-float')
-        span.innerText = "-1"
-        total_score -= 1
-
-        li.appendChild(span)
-        score_list.appendChild(li)
-    })
-
-    total_score_display.innerText = "Your score: " + total_score
 }

@@ -1,3 +1,5 @@
+const check_words = require('./game');
+
 const rooms = {};
 const users = [];
 
@@ -25,10 +27,11 @@ function deleteRoom(roomName) {
 }
 
 // Add user to room
-function addUser(roomName, userName) {
+function addUser(roomName, userName, userId) {
     if (roomName in rooms) {
-        users.push(userName);
-        rooms[roomName].push(userName);
+        var user = { "name": userName, "id": userId, "wordDict": {} };
+        users.push(user);
+        rooms[roomName].push(user);
         return true;
     }
     else {
@@ -42,14 +45,36 @@ function getUsers(roomName) {
 }
 
 // Remove user from room
-function removeUser(roomName, userName) {
-    if (userName in users) {
-        users.splice(users.indexOf(userName), 1);
+function removeUser(roomName, userId) {
+    const index = users.findIndex(user => user.id == userId);
+    if (index !== -1) {
+        users.splice(index, 1);
     }
 
-    if (roomName in rooms && userName in rooms[roomName]) {
-        rooms[roomName].splice(rooms[roomName].indexOf(userName), 1);
+    if (roomName in rooms) {
+        const index = rooms[roomName].findIndex(user => user.id == userId);
+        if (index !== -1) {
+            rooms[roomName].splice(index, 1);
+        }
     }
+
+    return rooms[roomName];
 }
 
-module.exports = { createRoom, roomExists, deleteRoom, addUser, getUsers, removeUser }
+// Add word list to a user
+function addWordList(wordList, userId) {
+    const index = users.findIndex(user => user.id === userId);
+    users[index].wordDict = check_words(wordList);
+}
+
+// Get word dicts
+function getWordDicts(roomName) {
+    const roomUsers = rooms[roomName];
+    var wordDicts = {}
+    roomUsers.forEach(user => {
+        wordDicts[user.name] = users.filter(u => u.id === user.id)[0].wordDict;
+    })
+    return wordDicts;
+}
+
+module.exports = { createRoom, roomExists, deleteRoom, addUser, getUsers, removeUser, addWordList, getWordDicts }
