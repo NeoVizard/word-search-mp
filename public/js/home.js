@@ -2,6 +2,7 @@ const welcome_text = document.querySelector('.welcome-text');
 const room_name = document.querySelector('.room-name');
 const user_name = document.querySelector('.user-name');
 const create_room = document.querySelector('.create-room');
+const join_room = document.querySelector('.join-room');
 var guest_name;
 
 create_guest();
@@ -19,6 +20,11 @@ create_room.addEventListener('click', (e) => {
     xhttp.setRequestHeader("Content-type", "application/json")
     xhttp.send( `{"roomName": "${room_name.value}"}` );
 
+});
+
+join_room.addEventListener('click', (e) => {
+    sessionStorage.setItem("username", user_name.value)
+    document.location.pathname = '/room/' + room_name.value
 });
 
 function create_guest() {

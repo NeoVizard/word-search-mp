@@ -13,7 +13,6 @@ const io = socketio(server);
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
-// app.use(cors);
 
 // Run when client connects
 io.on('connection', socket => {
@@ -22,7 +21,7 @@ io.on('connection', socket => {
     socket.on('joinRoom', ({ roomName, userName }) => {
         addUser(roomName, userName);
         socket.join(roomName);
-        socket.emit('users', getUsers(roomName));
+        io.in(roomName).emit('users', getUsers(roomName));
     });
 
     socket.on('disconnect', () => {
@@ -46,14 +45,7 @@ app.get('/room/:roomName', function (req, res) {
 
 app.post('/room', function (req, res) {
     const roomName = req.body["roomName"]
-    // const userName = req.body["userName"]
     if (createRoom(roomName)) {
-        // if (addUser(roomName, userName)) {
-        //     res.status(200).send("Room created and user added");
-        // }
-        // else {
-        //     res.status(500).send("User could not be added");
-        // }
         res.status(200).send("Room created successfully");
     }
     else {
