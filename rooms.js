@@ -29,9 +29,12 @@ function deleteRoom(roomName) {
 // Add user to room
 function addUser(roomName, userName, userId) {
     if (roomName in rooms) {
-        var user = { "name": userName, "id": userId, "wordDict": {} };
+        var user = { "name": userName, "id": userId, "wordDict": {}, "leader": false };
         users.push(user);
         rooms[roomName].push(user);
+        if (rooms[roomName].length == 1) {
+            user.leader = true;
+        }
         return true;
     }
     else {
@@ -54,7 +57,11 @@ function removeUser(roomName, userId) {
     if (roomName in rooms) {
         const index = rooms[roomName].findIndex(user => user.id == userId);
         if (index !== -1) {
+            const isLeader = rooms[roomName][index].leader;
             rooms[roomName].splice(index, 1);
+            if (isLeader && rooms[roomName].length > 0) {
+                rooms[roomName][0].leader = true;
+            }
         }
     }
 

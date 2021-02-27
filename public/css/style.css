@@ -8,6 +8,10 @@ body {
     margin: auto;
 }
 
+.pregame-player-list {
+    border: solid 2px black;
+}
+
 .user-list {
     height: 300px;
     width: 90px;

@@ -24,6 +24,10 @@ io.on('connection', socket => {
         io.in(roomName).emit('users', getUsers(roomName));
     });
 
+    socket.on('startGame', (roomName) => {
+        io.in(roomName).emit('startGame');
+    })
+
     socket.on('submit', (wordList) => {
         addWordList(wordList, socket.id);
         var roomName = Array.from(socket.rooms).filter(room => room !== socket.id)[0];

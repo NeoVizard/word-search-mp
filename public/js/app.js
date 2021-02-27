@@ -1,6 +1,10 @@
+const pregame = document.querySelector('.pregame')
 const gamebox = document.querySelector('.gamebox')
 const scoreboard = document.querySelector('.scoreboard')
+const timer = document.querySelector('.timer')
 const total_score_display = document.querySelector('.total-score')
+const pregameList = document.querySelector('.pregame-player-list')
+const startGame = document.querySelector('.start-game')
 const user_list = document.querySelector('.user-list')
 const current_word = document.querySelector('.word')
 const error_message = document.querySelector('.error-message')
@@ -12,12 +16,33 @@ const letters = document.querySelectorAll('.letter_b')
 const play_again = document.querySelector('.play-again')
 const scoreLists = document.querySelector('.score-lists')
 var word_list_data = []
+var gameState = 0 // 0 - Pregame, 1 - In-game, 2 - Score
+var userListData = []
 var res
+var gameTime = 10
 
 const userName = sessionStorage.getItem("username");
 const roomName = document.location.pathname.substr(6);
 
 socket = io();
+
+// PREGAME
+startGame.addEventListener('click', (e) => {
+    socket.emit('startGame', roomName);
+})
+
+// IN-GAME
+// Game timer
+window.setInterval(function() {
+    if (gameState == 1) {
+        gameTime--;
+        timer.innerText = gameTime;
+        if (gameTime == 0) {
+            gotoScorePage()
+            gameTime = 10
+        }
+    }
+}, 1000)
 
 // Get letters for grid
 var xhttp = new XMLHttpRequest()
@@ -95,8 +120,7 @@ word_list.addEventListener('click', (e) => {
 
 // Submit button event listener
 check_button.addEventListener('click', (e) => {
-    generate_score();
-    socket.emit('submit', word_list_data);
+    gotoScorePage();
 })
 
 // Play Again button event listener
@@ -111,11 +135,8 @@ socket.emit('joinRoom', { roomName, userName });
 
 // Get user list
 socket.on('users', (users) => {
-    if (users != null) {
-        user_list.innerHTML = `
-            ${users.map(user => `<li> ${user.name} </li>`).join('')}
-        `;
-    }
+    userListData = users
+    makeUserList(users)
 })
 
 // Score update
@@ -123,16 +144,47 @@ socket.on('scoreUpdate', (wordDicts) => {
     update_scoreboard(wordDicts);
 })
 
+socket.on('startGame', () => {
+    gotoGamePage()
+})
+
+// Generate userlist
+function makeUserList(users) {
+    let listHTML = ''
+    if (users != null) {
+        listHTML = `
+            ${users.map(user => `<li> ${user.name} ${user.leader ? "👑" : ""} </li>`).join('')}
+        `;
+    }
+    
+    if (gameState == 0) {
+        pregameList.innerHTML = listHTML;
+    }
+    else if (gameState == 1) {
+        user_list.innerHTML = listHTML;
+    }
+}
+
 // Function to clear current word and reset the grid
 function reset_word() {
     current_word.value = ""
     letters.forEach(l => l.disabled = false)
 }
 
+// Goto game page
+function gotoGamePage() {
+    pregame.classList.add('invis')
+    gamebox.classList.remove('invis')
+    gameState = 1
+    makeUserList(userListData)
+}
+
 // Goto score page
-function generate_score() {
+function gotoScorePage() {
     gamebox.classList.add('invis')
     scoreboard.classList.remove('invis')
+    gameState = 2
+    socket.emit('submit', word_list_data);
 }
 
 // Updates the scoreboard
