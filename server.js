@@ -3,8 +3,8 @@ const http = require('http');
 const express = require('express');
 const cors = require('cors');
 const socketio = require('socket.io');
-const check_words = require('./game');
-const { createRoom, roomExists, deleteRoom, addUser, getUsers, removeUser, addWordList, getWordDicts } = require('./rooms');
+const { checkWords, getLetters } = require('./game');
+const { createRoom, roomExists, getRoomLetters, deleteRoom, addUser, getUsers, removeUser, addWordList, getWordDicts } = require('./rooms');
 
 const app = express();
 const server = http.createServer(app);
@@ -25,6 +25,7 @@ io.on('connection', socket => {
     });
 
     socket.on('startGame', (roomName) => {
+        socket.emit('letters', getRoomLetters(roomName));
         io.in(roomName).emit('startGame');
     })
 
@@ -78,10 +79,6 @@ app.post('/room', function (req, res) {
 
 app.get('/user_uuid', cors(), function (req, res) {
     res.send('12432112413');
-});
-
-app.post('/words', function (req, res) {
-    res.send(check_words(req.body));
 });
 
 const PORT = process.env.PORT || 3000;

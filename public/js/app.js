@@ -33,7 +33,7 @@ startGame.addEventListener('click', (e) => {
 
 // IN-GAME
 // Game timer
-window.setInterval(function() {
+window.setInterval(function () {
     if (gameState == 1) {
         gameTime--;
         timer.innerText = gameTime;
@@ -43,19 +43,6 @@ window.setInterval(function() {
         }
     }
 }, 1000)
-
-// Get letters for grid
-var xhttp = new XMLHttpRequest()
-xhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-        res = JSON.parse(this.responseText)["letters"]
-        letters.forEach(l => {
-            l.innerHTML = res[parseInt(l.id)]
-        })
-    }
-}
-xhttp.open('GET', 'https://boggle.neovizard.repl.co/letters')
-xhttp.send()
 
 // Grid event listener
 letters.forEach(l => l.addEventListener('click', (e) => {
@@ -144,8 +131,16 @@ socket.on('scoreUpdate', (wordDicts) => {
     update_scoreboard(wordDicts);
 })
 
+// Game start
 socket.on('startGame', () => {
     gotoGamePage()
+})
+
+// Get letters
+socket.on('letters', (roomLetters) => {
+    letters.forEach(l => {
+        l.innerHTML = roomLetters[parseInt(l.id)]
+    })
 })
 
 // Generate userlist
@@ -156,7 +151,7 @@ function makeUserList(users) {
             ${users.map(user => `<li> ${user.name} ${user.leader ? "👑" : ""} </li>`).join('')}
         `;
     }
-    
+
     if (gameState == 0) {
         pregameList.innerHTML = listHTML;
     }

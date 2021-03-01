@@ -1,6 +1,7 @@
-const check_words = require('./game');
+const { checkWords, getLetters } = require('./game');
 
 const rooms = {};
+const roomToLetters = {};
 const users = [];
 
 // Create room
@@ -10,6 +11,7 @@ function createRoom(roomName) {
     }
     else {
         rooms[roomName] = [];
+        roomToLetters[roomName] = getLetters();
         return true;
     }
 }
@@ -17,6 +19,11 @@ function createRoom(roomName) {
 // Check room exists
 function roomExists(roomName) {
     return roomName in rooms;
+}
+
+// Get letters of a room
+function getRoomLetters(roomName) {
+    return roomToLetters[roomName];
 }
 
 // Delete room
@@ -71,7 +78,7 @@ function removeUser(roomName, userId) {
 // Add word list to a user
 function addWordList(wordList, userId) {
     const index = users.findIndex(user => user.id === userId);
-    users[index].wordDict = check_words(wordList);
+    users[index].wordDict = checkWords(wordList);
 }
 
 // Get word dicts
@@ -84,4 +91,4 @@ function getWordDicts(roomName) {
     return wordDicts;
 }
 
-module.exports = { createRoom, roomExists, deleteRoom, addUser, getUsers, removeUser, addWordList, getWordDicts }
+module.exports = { createRoom, roomExists, getRoomLetters, deleteRoom, addUser, getUsers, removeUser, addWordList, getWordDicts }
