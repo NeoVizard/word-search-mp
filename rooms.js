@@ -36,7 +36,7 @@ function deleteRoom(roomName) {
 // Add user to room
 function addUser(roomName, userName, userId) {
     if (roomName in rooms) {
-        var user = { "name": userName, "id": userId, "wordDict": {}, "leader": false };
+        var user = { "name": userName, "id": userId, "wordDict": null, "leader": false };
         users.push(user);
         rooms[roomName].push(user);
         if (rooms[roomName].length == 1) {
@@ -52,6 +52,17 @@ function addUser(roomName, userName, userId) {
 // Get list of users in a room
 function getUsers(roomName) {
     return rooms[roomName];
+}
+
+// Checks if all user data for a room is received
+function ifWordDictsUpdated(roomName) {
+    let isUpdated = true;
+    rooms[roomName].forEach(r => {
+        if (r.wordDict === null) {
+            isUpdated = false;
+        }
+    });
+    return isUpdated;
 }
 
 // Remove user from room
@@ -91,4 +102,4 @@ function getWordDicts(roomName) {
     return wordDicts;
 }
 
-module.exports = { createRoom, roomExists, getRoomLetters, deleteRoom, addUser, getUsers, removeUser, addWordList, getWordDicts }
+module.exports = { createRoom, roomExists, getRoomLetters, deleteRoom, addUser, getUsers, ifWordDictsUpdated, removeUser, addWordList, getWordDicts }

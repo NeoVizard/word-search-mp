@@ -1,5 +1,6 @@
 const pregame = document.querySelector('.pregame')
 const gamebox = document.querySelector('.gamebox')
+const loader = document.querySelector('.loader')
 const scoreboard = document.querySelector('.scoreboard')
 const timer = document.querySelector('.timer')
 const total_score_display = document.querySelector('.total-score')
@@ -38,7 +39,7 @@ window.setInterval(function () {
         gameTime--;
         timer.innerText = gameTime;
         if (gameTime == 0) {
-            gotoScorePage()
+            loadScorePage()
             gameTime = 10
         }
     }
@@ -107,7 +108,7 @@ word_list.addEventListener('click', (e) => {
 
 // Submit button event listener
 check_button.addEventListener('click', (e) => {
-    gotoScorePage();
+    loadScorePage();
 })
 
 // Play Again button event listener
@@ -129,6 +130,7 @@ socket.on('users', (users) => {
 // Score update
 socket.on('scoreUpdate', (wordDicts) => {
     update_scoreboard(wordDicts);
+    showScores();
 })
 
 // Game start
@@ -175,11 +177,17 @@ function gotoGamePage() {
 }
 
 // Goto score page
-function gotoScorePage() {
+function loadScorePage() {
     gamebox.classList.add('invis')
-    scoreboard.classList.remove('invis')
+    loader.classList.remove('invis')
     gameState = 2
-    socket.emit('submit', word_list_data);
+    socket.emit('submit', word_list_data)
+}
+
+// Ends loader to reveal scores
+function showScores() {
+    loader.classList.add('invis')
+    scoreboard.classList.remove('invis')
 }
 
 // Updates the scoreboard

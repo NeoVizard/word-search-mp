@@ -3,8 +3,7 @@ const http = require('http');
 const express = require('express');
 const cors = require('cors');
 const socketio = require('socket.io');
-const { checkWords, getLetters } = require('./game');
-const { createRoom, roomExists, getRoomLetters, deleteRoom, addUser, getUsers, removeUser, addWordList, getWordDicts } = require('./rooms');
+const { createRoom, roomExists, getRoomLetters, deleteRoom, addUser, getUsers, ifWordDictsUpdated, removeUser, addWordList, getWordDicts } = require('./rooms');
 
 const app = express();
 const server = http.createServer(app);
@@ -19,20 +18,22 @@ io.on('connection', socket => {
     console.log('New connection...');
 
     socket.on('joinRoom', ({ roomName, userName }) => {
+        socket.emit('letters', getRoomLetters(roomName));
         addUser(roomName, userName, socket.id);
         socket.join(roomName);
         io.in(roomName).emit('users', getUsers(roomName));
     });
 
     socket.on('startGame', (roomName) => {
-        socket.emit('letters', getRoomLetters(roomName));
         io.in(roomName).emit('startGame');
     })
 
     socket.on('submit', (wordList) => {
         addWordList(wordList, socket.id);
         var roomName = Array.from(socket.rooms).filter(room => room !== socket.id)[0];
-        io.in(roomName).emit('scoreUpdate', getWordDicts(roomName));
+        if (ifWordDictsUpdated(roomName)) {
+            io.in(roomName).emit('scoreUpdate', getWordDicts(roomName));
+        }
     });
 
     socket.on('disconnecting', () => {
@@ -40,7 +41,7 @@ io.on('connection', socket => {
         const roomName = socket.rooms.keys().next().value;
 
         const remainingUsers = removeUser(roomName, socket.id);
-        if(remainingUsers.length !== 0) {
+        if (remainingUsers.length !== 0) {
             io.in(roomName).emit('users', remainingUsers);
         }
         else {
