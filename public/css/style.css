@@ -1,5 +1,9 @@
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: blanchedalmond;
+    background-color: rgb(81 81 81);
+    display: grid;
+    place-items: center;
 }
 
 .gamebox {
@@ -8,8 +12,31 @@ body {
     margin: auto;
 }
 
+.pregame {
+    box-sizing: border-box;
+    width: auto;
+    min-width: 300px;
+}
+
 .pregame-player-list {
-    border: solid 2px black;
+    width: auto;
+    min-width: 200px;
+    background-color: black;
+    border-radius: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.start-game {
+    margin: 8px 0px 8px 0px;
+    width: 100%;
+    background-color: #f28c00;
+    color: blanchedalmond;
+    border-radius: 5px;
+    border-width: 0px;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 20px;
+    height: 35px;
 }
 
 .user-list {

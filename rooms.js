@@ -16,6 +16,13 @@ function createRoom(roomName) {
     }
 }
 
+// Refresh room letters
+function refreshRoomLetters(roomName) {
+    if (roomName in rooms) {
+        roomToLetters[roomName] = getLetters();
+    }
+}
+
 // Check room exists
 function roomExists(roomName) {
     return roomName in rooms;
@@ -102,4 +109,4 @@ function getWordDicts(roomName) {
     return wordDicts;
 }
 
-module.exports = { createRoom, roomExists, getRoomLetters, deleteRoom, addUser, getUsers, ifWordDictsUpdated, removeUser, addWordList, getWordDicts }
+module.exports = { createRoom, refreshRoomLetters, roomExists, getRoomLetters, deleteRoom, addUser, getUsers, ifWordDictsUpdated, removeUser, addWordList, getWordDicts }

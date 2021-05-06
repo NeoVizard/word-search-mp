@@ -5,7 +5,7 @@ const create_room = document.querySelector('.create-room');
 const join_room = document.querySelector('.join-room');
 var guest_name;
 
-create_guest();
+// create_guest(); TODO: Deprecate this shit
 
 create_room.addEventListener('click', (e) => {
     sessionStorage.setItem("username", user_name.value)

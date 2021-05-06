@@ -3,7 +3,7 @@ const http = require('http');
 const express = require('express');
 const cors = require('cors');
 const socketio = require('socket.io');
-const { createRoom, roomExists, getRoomLetters, deleteRoom, addUser, getUsers, ifWordDictsUpdated, removeUser, addWordList, getWordDicts } = require('./rooms');
+const { createRoom, refreshRoomLetters, roomExists, getRoomLetters, deleteRoom, addUser, getUsers, ifWordDictsUpdated, removeUser, addWordList, getWordDicts } = require('./rooms');
 
 const app = express();
 const server = http.createServer(app);
@@ -26,7 +26,7 @@ io.on('connection', socket => {
 
     socket.on('startGame', (roomName) => {
         io.in(roomName).emit('startGame');
-    })
+    });
 
     socket.on('submit', (wordList) => {
         addWordList(wordList, socket.id);
@@ -34,6 +34,12 @@ io.on('connection', socket => {
         if (ifWordDictsUpdated(roomName)) {
             io.in(roomName).emit('scoreUpdate', getWordDicts(roomName));
         }
+    });
+
+    socket.on('playAgain', (roomName) => {
+        refreshRoomLetters(roomName);
+        io.in(roomName).emit('reloadRoom');
+        io.in(roomName).emit('letters', getRoomLetters(roomName));
     });
 
     socket.on('disconnecting', () => {

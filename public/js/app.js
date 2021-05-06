@@ -113,8 +113,7 @@ check_button.addEventListener('click', (e) => {
 
 // Play Again button event listener
 play_again.addEventListener('click', (e) => {
-    // Reload page
-    document.location.reload()
+    socket.emit('playAgain', roomName);
 })
 
 // SOCKET STUFF
@@ -123,27 +122,38 @@ socket.emit('joinRoom', { roomName, userName });
 
 // Get user list
 socket.on('users', (users) => {
-    userListData = users
-    makeUserList(users)
-})
+    userListData = users;
+    makeUserList(users);
+    
+    if (userListData.filter(u => u.name == userName).length > 0 && !userListData.filter(u => u.name == userName)[0].leader) {
+        play_again.disabled = true;
+    }
+});
 
 // Score update
 socket.on('scoreUpdate', (wordDicts) => {
     update_scoreboard(wordDicts);
     showScores();
-})
+});
 
 // Game start
 socket.on('startGame', () => {
-    gotoGamePage()
-})
+    reset_word();
+    gotoGamePage();
+});
 
 // Get letters
 socket.on('letters', (roomLetters) => {
     letters.forEach(l => {
-        l.innerHTML = roomLetters[parseInt(l.id)]
+        l.innerHTML = roomLetters[parseInt(l.id)];
     })
-})
+});
+
+// Refresh room to play again
+socket.on('reloadRoom', () => {
+    console.log("here!");
+    gotoPregame();
+});
 
 // Generate userlist
 function makeUserList(users) {
@@ -166,6 +176,12 @@ function makeUserList(users) {
 function reset_word() {
     current_word.value = ""
     letters.forEach(l => l.disabled = false)
+}
+
+// Goto preagame
+function gotoPregame() {
+    scoreboard.classList.add('invis')
+    pregame.classList.remove('invis')
 }
 
 // Goto game page
