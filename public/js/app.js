@@ -215,6 +215,7 @@ function update_scoreboard(userWordDicts) {
         var wordDict = userWordDicts[k];
         var userName = document.createElement('h3');
         var score_list = document.createElement('ul');
+        var container = document.createElement('div');
 
         good_words = Object.keys(wordDict).filter(word => wordDict[word] == true)
         bad_words = Object.keys(wordDict).filter(word => wordDict[word] == false)
@@ -260,7 +261,11 @@ function update_scoreboard(userWordDicts) {
 
         userName.innerText = k + ": " + total_score;
 
-        scoreLists.appendChild(userName);
-        scoreLists.appendChild(score_list);
+        container.classList.add('score-contianer');
+        score_list.classList.add('score-list');
+        container.appendChild(userName);
+        container.appendChild(score_list);
+
+        scoreLists.appendChild(container);
     })
 }
