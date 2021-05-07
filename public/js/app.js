@@ -34,16 +34,16 @@ startGame.addEventListener('click', (e) => {
 
 // IN-GAME
 // Game timer
-window.setInterval(function () {
-    if (gameState == 1) {
-        gameTime--;
-        timer.innerText = gameTime;
-        if (gameTime == 0) {
-            loadScorePage()
-            gameTime = 10
-        }
-    }
-}, 1000)
+// window.setInterval(function () {
+//     if (gameState == 1) {
+//         gameTime--;
+//         timer.innerText = gameTime;
+//         if (gameTime == 0) {
+//             loadScorePage()
+//             gameTime = 10
+//         }
+//     }
+// }, 1000)
 
 // Grid event listener
 letters.forEach(l => l.addEventListener('click', (e) => {
@@ -152,6 +152,8 @@ socket.on('letters', (roomLetters) => {
 // Refresh room to play again
 socket.on('reloadRoom', () => {
     console.log("here!");
+    word_list.innerHTML = '';
+    word_list_data = [];
     gotoPregame();
 });
 

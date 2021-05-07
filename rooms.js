@@ -105,8 +105,18 @@ function getWordDicts(roomName) {
     var wordDicts = {}
     roomUsers.forEach(user => {
         wordDicts[user.name] = users.filter(u => u.id === user.id)[0].wordDict;
-    })
+    });
     return wordDicts;
 }
 
-module.exports = { createRoom, refreshRoomLetters, roomExists, getRoomLetters, deleteRoom, addUser, getUsers, ifWordDictsUpdated, removeUser, addWordList, getWordDicts }
+// Reset word dicts to null
+function resetWordDicts(roomName) {
+    const roomUsers = rooms[roomName];
+    if(roomUsers) {
+        roomUsers.forEach(user => {
+            user.wordDict = null;
+        });
+    }
+}
+
+module.exports = { createRoom, refreshRoomLetters, roomExists, getRoomLetters, deleteRoom, addUser, getUsers, ifWordDictsUpdated, removeUser, addWordList, getWordDicts, resetWordDicts }

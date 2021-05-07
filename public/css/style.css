@@ -6,9 +6,24 @@ body {
     place-items: center;
 }
 
+::-webkit-scrollbar {
+    width: 15px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 4px solid transparent;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
 .gamebox {
-    width: 450px;
-    height: 450px;
+    width: auto;
+    height: auto;
     margin: auto;
 }
 
@@ -40,11 +55,16 @@ body {
 }
 
 .user-list {
-    height: 300px;
-    width: 90px;
-    margin: 10px 0px 0px 0px;
+    height: 317.2px;
+    width: auto;
+    margin: 4px 2px 0px 0px;
     border: solid 2px black;
+    border-radius: 10px;
     float: left;
+    background-color: #3a3a3a;
+    padding-top: 5px;
+    padding-right: 10px;
+    box-sizing: border-box;
 }
 
 .scoreboard {
@@ -84,14 +104,19 @@ body {
 
 button {
     border: none;
-    color: white;
-    background-color: #555555;
+    color: blanchedalmond;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 18px;
+    border-radius: 10px;
+    background-color: #f28c00;
 }
 
 button.letter_b {
     width: 100px;
     height: 100px;
     font-size: 20px;
+    border-radius: 15px;
+    margin: 2px;
 }
 
 button.letter_b:disabled {
@@ -112,7 +137,8 @@ input.reset_word {
 
 img.delete_word {
     float: right;
-    padding: 2px 10px 2px 0px;
+    padding: 2px 5px 2px 0px;
+    filter: invert(89%) sepia(21%) saturate(494%) hue-rotate(325deg) brightness(105%) contrast(101%);
 }
 
 img.delete_word:hover {
@@ -124,9 +150,10 @@ img.delete_word:hover {
     height: 28px;
     float: left;
     border-radius: 32px;
-    margin-right: 20px;
+    margin-right: 10px;
     padding-left: 10px;
     font-size: 20px;
+    color: blanchedalmond;
 }
 
 .word:focus {
@@ -148,6 +175,7 @@ img.delete_word:hover {
     font-weight: bold;
     border-style: solid;
     border-width: 2px;
+    border-radius: 10px;
     overflow: auto;
 }
 
