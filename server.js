@@ -6,6 +6,9 @@ const socketio = require('socket.io');
 const { createRoom, refreshRoomLetters, roomExists, getRoomLetters, deleteRoom, addUser, getUsers, ifWordDictsUpdated, removeUser, addWordList, getWordDicts, resetWordDicts } = require('./rooms');
 
 const app = express();
+app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
+app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
+app.use('/js', express.static(__dirname + '/node_modules/@popperjs/core/dist/umd'));
 const server = http.createServer(app);
 const io = socketio(server);
 

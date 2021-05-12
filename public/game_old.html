@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Game</title>
+</head>
+
+<body>
+    <div class="pregame">
+        <ul class="pregame-player-list"></ul>
+        <button class="start-game">Start</button>
+    </div>
+    <div class="gamebox invis">
+        <h1 class="timer"></h1>
+        <ul class="user-list"></ul>
+        <table class="letter_grid">
+            <tr>
+                <td><button id="0" class="letter_b"></button></td>
+                <td><button id="1" class="letter_b"></button></td>
+                <td><button id="2" class="letter_b"></button></td>
+            </tr>
+            <tr>
+                <td><button id="3" class="letter_b"></button></td>
+                <td><button id="4" class="letter_b"></button></td>
+                <td><button id="5" class="letter_b"></button></td>
+            </tr>
+            <tr>
+                <td><button id="6" class="letter_b"></button></td>
+                <td><button id="7" class="letter_b"></button></td>
+                <td><button id="8" class="letter_b"></button></td>
+            </tr>
+        </table>
+        <hr>
+        <div class="word_submit">
+            <input class="word" disabled></input>
+            <input class="reset_word" type="image" src="/arrow-repeat.svg" />
+            <button class="add_word">Add</button>
+            <h5 class="error-message"></h5>
+        </div>
+        <hr>
+        <div class="words_list_submit">
+            <ul class="word_list"></ul>
+            <button class="check_words">Submit</button>
+        </div>
+    </div>
+    <div class="loader invis">
+        <h1>LOADING...</h1>
+    </div>
+    <div class="scoreboard invis">
+        <h1 class="total-score">SCORES</h1>
+        <div class="score-lists"></div>
+        <button class="play-again">Play Again</button>
+    </div>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/app.js"></script>
+
+</html>

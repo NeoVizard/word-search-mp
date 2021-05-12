@@ -1,0 +1,13 @@
+button.letter-b {
+    width: 100px;
+    height: 100px;
+    border-radius: 15px;
+    margin: 2px;
+}
+
+.user-list {
+    border-radius: 15px;
+    margin: 2px 20px 0px 0px;
+    max-height: 312px;
+    overflow: auto;
+}

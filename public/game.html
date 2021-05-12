@@ -5,58 +5,192 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
-    <title>Game</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/game.css">
+    <title>Word Jumble</title>
 </head>
 
 <body>
-    <div class="pregame">
-        <ul class="pregame-player-list"></ul>
-        <button class="start-game">Start</button>
-    </div>
-    <div class="gamebox invis">
-        <h1 class="timer"></h1>
-        <ul class="user-list"></ul>
-        <table class="letter_grid">
-            <tr>
-                <td><button id="0" class="letter_b"></button></td>
-                <td><button id="1" class="letter_b"></button></td>
-                <td><button id="2" class="letter_b"></button></td>
-            </tr>
-            <tr>
-                <td><button id="3" class="letter_b"></button></td>
-                <td><button id="4" class="letter_b"></button></td>
-                <td><button id="5" class="letter_b"></button></td>
-            </tr>
-            <tr>
-                <td><button id="6" class="letter_b"></button></td>
-                <td><button id="7" class="letter_b"></button></td>
-                <td><button id="8" class="letter_b"></button></td>
-            </tr>
-        </table>
-        <hr>
-        <div class="word_submit">
-            <input class="word" disabled></input>
-            <input class="reset_word" type="image" src="/arrow-repeat.svg" />
-            <button class="add_word">Add</button>
-            <h5 class="error-message"></h5>
+    <main>
+        <header class="p-3 bg-dark text-white">
+            <div class="container-fluid">
+                <div class="d-flex flex-wrap align-items-center justify-content-start">
+                    <a href="/" class="d-flex align-items-center text-white text-decoration-none me-auto">
+                        <svg class="bi" width="32" height="32" fill="currentColor">
+                            <use xlink:href="/svg/bootstrap-icons.svg#bootstrap" />
+                        </svg>
+                    </a>
+                    <div class="text-end">
+                        <button class="btn d-flex text-white p-0 align-items-center" data-bs-toggle="modal"
+                            data-bs-target="#nameModal">
+                            <svg class="bi mx-1 px-1" width="32" height="32" fill="currentColor">
+                                <use xlink:href="/svg/bootstrap-icons.svg#person-circle" />
+                            </svg>
+                            <span class="fs-5">Neo</span>
+                        </button>
+                        <div class="modal fade" id="nameModal" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-dark" id="nameModalLabel">Choose a Nickname</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body d-flex flex-wrap">
+                                        <div class="input-group mb-3 col-12">
+                                            <span class="input-group-text" id="player-name">Name</span>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                        <button type="button" class="btn btn-primary ms-auto">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- PREGAME LOBBY LIST -->
+        <!-- USING d-none TO HIDE -->
+        <div class="pregame container d-flex flex-wrap justify-content-center mt-3 mt-md-4">
+            <div class="w-100">
+                <ul class="pregame-player-list player-list list-group w-100">
+                    <li class="list-group-item list-group-item-heading bg-dark text-white fw-bolder fs-5">Players</li>
+                </ul>
+                <button class="btn start-game">Start</button>
+            </div>
         </div>
-        <hr>
-        <div class="words_list_submit">
-            <ul class="word_list"></ul>
-            <button class="check_words">Submit</button>
+
+        <!-- INGAME -->
+        <div class="gamebox container-fluid d-flex flex-wrap justify-content-center mt-3 mt-md-4 d-none">
+            <div class="d-flex flex-column">
+                <div class="d-flex flex-wrap justify-content-center">
+                    <div class="d-sm-flex d-none">
+                        <ul class="user-list list-group">
+                            <li class="list-group-item list-group-item-heading bg-dark text-white fw-bolder fs-5">
+                                Players
+                            </li>
+                            <li class="list-group-item">Lorem.</li>
+                            <li class="list-group-item">Lorem.</li>
+                            <li class="list-group-item">Lorem.</li>
+                            <li class="list-group-item">Lorem.</li>
+                            <li class="list-group-item">Lorem.</li>
+                            <li class="list-group-item">Lorem.</li>
+                            <li class="list-group-item">Lorem.</li>
+                            <li class="list-group-item">Lorem.</li>
+                        </ul>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <div>
+                            <button id="0" class="letter-b fs-1 bg-dark text-white">A</button>
+                            <button id="1" class="letter-b fs-1 bg-dark text-white">S</button>
+                            <button id="2" class="letter-b fs-1 bg-dark text-white">D</button>
+                        </div>
+                        <div>
+                            <button id="3" class="letter-b fs-1 bg-dark text-white">Q</button>
+                            <button id="4" class="letter-b fs-1 bg-dark text-white">W</button>
+                            <button id="5" class="letter-b fs-1 bg-dark text-white">E</button>
+                        </div>
+                        <div>
+                            <button id="6" class="letter-b fs-1 bg-dark text-white">T</button>
+                            <button id="7" class="letter-b fs-1 bg-dark text-white">Y</button>
+                            <button id="8" class="letter-b fs-1 bg-dark text-white">U</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex flex-wrap justify-content-between mt-3 mt-md-4">
+                    <input class="col-8" type="text" name="current-word" id="currentWord">
+                    <span class="col-2 d-flex justify-content-end"><button
+                            class="reset_word btn bg-dark text-white w-100 ms-1">Reset</button></span>
+                    <span class="col-2 d-flex justify-content-end"><button
+                            class="add_word btn bg-dark text-white w-100 ms-1">Add</button></span>
+                </div>
+                <div class="d-flex flex-nowrap mt-3 mt-md-4">
+                    <div class="col-9">
+                        <ul class="word_list list-group w-100">
+                            <li class="list-group-item">QWERTYUIO</li>
+                            <li class="list-group-item">WORD</li>
+                            <li class="list-group-item">ASDFGHJKL</li>
+                            <li class="list-group-item">WORD</li>
+                        </ul>
+                    </div>
+                    <div class="col-3 d-flex flex-wrap">
+                        <span class="col-12 d-flex justify-content-center fs-5 align-items-end">Time left:</span>
+                        <p class="col-12 d-flex justify-content-center fs-1 fw-bolder">10</p>
+                        <button class="btn check_words">Check/Submit</button>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="loader invis">
-        <h1>LOADING...</h1>
-    </div>
-    <div class="scoreboard invis">
-        <h1 class="total-score">SCORES</h1>
-        <div class="score-lists"></div>
-        <button class="play-again">Play Again</button>
-    </div>
+
+        <!-- POST GAME / SCORES -->
+        <div class="scoreboard container-fluid d-flex justify-content-center mt-3 mt-md-4 d-none">
+            <div class="d-flex flex-wrap justify-content-start">
+                <div class="card col-12 col-sm-6 col-md-4">
+                    <div class="card-body bg-dark text-white">
+                        <h5 class="card-title">Player 1</h5>
+                        <ul class="list-group">
+                            <li class="list-group-item">WORD</li>
+                            <li class="list-group-item">WORD</li>
+                            <li class="list-group-item">WORD</li>
+                            <li class="list-group-item">WORD</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card col-12 col-sm-6 col-md-4">
+                    <div class="card-body bg-dark text-white">
+                        <h5 class="card-title">Player 2</h5>
+                        <ul class="list-group">
+                            <li class="list-group-item">WORD</li>
+                            <li class="list-group-item">WORD</li>
+                            <li class="list-group-item">WORD</li>
+                            <li class="list-group-item">WORD</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card col-12 col-sm-6 col-md-4">
+                    <div class="card-body bg-dark text-white">
+                        <h5 class="card-title">Player 3</h5>
+                        <ul class="list-group">
+                            <li class="list-group-item">WORD</li>
+                            <li class="list-group-item">WORD</li>
+                            <li class="list-group-item">WORD</li>
+                            <li class="list-group-item">WORD</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card col-12 col-sm-6 col-md-4">
+                    <div class="card-header bg-dark text-white fs-5 fw-bold">Player 4</div>
+                    <div class="card-body p-2">
+                        <ul class="list-group w-100">
+                            <li class="list-group-item">BIGWORD</li>
+                            <li class="list-group-item">WORD</li>
+                            <li class="list-group-item">VVBIGWORD</li>
+                            <li class="list-group-item">WORD</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card col-12 col-sm-6 col-md-4">
+                    <div class="card-body bg-dark text-white">
+                        <h5 class="card-title">Player 5</h5>
+                        <ul class="list-group">
+                            <li class="list-group-item">WORD</li>
+                            <li class="list-group-item">WORD</li>
+                            <li class="list-group-item">WORD</li>
+                            <li class="list-group-item">WORD</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <button class="btn play-again">PLAY AGAIN</button>
+        </div>
+    </main>
+
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/app.js"></script>
 </body>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/app.js"></script>
 
 </html>

@@ -7,13 +7,13 @@ const total_score_display = document.querySelector('.total-score')
 const pregameList = document.querySelector('.pregame-player-list')
 const startGame = document.querySelector('.start-game')
 const user_list = document.querySelector('.user-list')
-const current_word = document.querySelector('.word')
+const current_word = document.querySelector('#currentWord')
 const error_message = document.querySelector('.error-message')
 const add_button = document.querySelector('.add_word')
 const reset_button = document.querySelector('.reset_word')
 const check_button = document.querySelector('.check_words')
 const word_list = document.querySelector('.word_list')
-const letters = document.querySelectorAll('.letter_b')
+const letters = document.querySelectorAll('.letter-b')
 const play_again = document.querySelector('.play-again')
 const scoreLists = document.querySelector('.score-lists')
 var word_list_data = []
@@ -22,7 +22,7 @@ var userListData = []
 var res
 var gameTime = 10
 
-const userName = sessionStorage.getItem("username");
+const userName = localStorage.getItem("userName");
 const roomName = document.location.pathname.substr(6);
 
 socket = io();
@@ -72,6 +72,7 @@ add_button.addEventListener('click', (e) => {
     // Create li
     const li = document.createElement('li')
     li.classList.add('word_in_list')
+    li.classList.add('list-group-item')
     word_list_data.push(current_word.value)
     li.innerHTML = current_word.value
 
@@ -162,9 +163,10 @@ function makeUserList(users) {
     let listHTML = ''
     if (users != null) {
         listHTML = `
-            ${users.map(user => `<li> ${user.name} ${user.leader ? "👑" : ""} </li>`).join('')}
+            ${users.map(user => `<li class="list-group-item"> ${user.name} ${user.leader ? "👑" : ""} </li>`).join('')}
         `;
     }
+    listHTML = '<li class="list-group-item list-group-item-heading bg-dark text-white fw-bolder fs-5">Players</li>' + listHTML;
 
     if (gameState == 0) {
         pregameList.innerHTML = listHTML;
@@ -182,30 +184,30 @@ function reset_word() {
 
 // Goto preagame
 function gotoPregame() {
-    scoreboard.classList.add('invis')
-    pregame.classList.remove('invis')
+    scoreboard.classList.add('d-none')
+    pregame.classList.remove('d-none')
 }
 
 // Goto game page
 function gotoGamePage() {
-    pregame.classList.add('invis')
-    gamebox.classList.remove('invis')
+    pregame.classList.add('d-none')
+    gamebox.classList.remove('d-none')
     gameState = 1
     makeUserList(userListData)
 }
 
 // Goto score page
 function loadScorePage() {
-    gamebox.classList.add('invis')
-    loader.classList.remove('invis')
+    gamebox.classList.add('d-none')
+    loader.classList.remove('d-none')
     gameState = 2
     socket.emit('submit', word_list_data)
 }
 
 // Ends loader to reveal scores
 function showScores() {
-    loader.classList.add('invis')
-    scoreboard.classList.remove('invis')
+    loader.classList.add('d-none')
+    scoreboard.classList.remove('d-none')
 }
 
 // Updates the scoreboard
