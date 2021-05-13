@@ -26,7 +26,7 @@
                             <svg class="bi mx-1 px-1" width="32" height="32" fill="currentColor">
                                 <use xlink:href="/svg/bootstrap-icons.svg#person-circle" />
                             </svg>
-                            <span class="fs-5">Neo</span>
+                            <span class="fs-5" id="displayName"></span>
                         </button>
                         <div class="modal fade" id="nameModal" tabindex="-1">
                             <div class="modal-dialog modal-dialog-centered">
@@ -38,10 +38,11 @@
                                     </div>
                                     <div class="modal-body d-flex flex-wrap">
                                         <div class="input-group mb-3 col-12">
-                                            <span class="input-group-text" id="player-name">Name</span>
-                                            <input type="text" class="form-control">
+                                            <span class="input-group-text">Name</span>
+                                            <input type="text" class="form-control" id="userName">
                                         </div>
-                                        <button type="button" class="btn btn-primary ms-auto">Save</button>
+                                        <button type="button" class="btn btn-primary ms-auto" data-bs-dismiss="modal"
+                                            id="saveName">Save</button>
                                     </div>
                                 </div>
                             </div>
@@ -68,17 +69,9 @@
                 <div class="d-flex flex-wrap justify-content-center">
                     <div class="d-sm-flex d-none">
                         <ul class="user-list list-group">
-                            <li class="list-group-item list-group-item-heading bg-dark text-white fw-bolder fs-5">
+                            <!-- <li class="list-group-item list-group-item-heading bg-dark text-white fw-bolder fs-5">
                                 Players
-                            </li>
-                            <li class="list-group-item">Lorem.</li>
-                            <li class="list-group-item">Lorem.</li>
-                            <li class="list-group-item">Lorem.</li>
-                            <li class="list-group-item">Lorem.</li>
-                            <li class="list-group-item">Lorem.</li>
-                            <li class="list-group-item">Lorem.</li>
-                            <li class="list-group-item">Lorem.</li>
-                            <li class="list-group-item">Lorem.</li>
+                            </li> -->
                         </ul>
                     </div>
                     <div class="d-flex flex-column">
@@ -109,13 +102,9 @@
                 <div class="d-flex flex-nowrap mt-3 mt-md-4">
                     <div class="col-9">
                         <ul class="word_list list-group w-100">
-                            <li class="list-group-item">QWERTYUIO</li>
-                            <li class="list-group-item">WORD</li>
-                            <li class="list-group-item">ASDFGHJKL</li>
-                            <li class="list-group-item">WORD</li>
                         </ul>
                     </div>
-                    <div class="col-3 d-flex flex-wrap">
+                    <div class="col-3 d-flex flex-column">
                         <span class="col-12 d-flex justify-content-center fs-5 align-items-end">Time left:</span>
                         <p class="col-12 d-flex justify-content-center fs-1 fw-bolder">10</p>
                         <button class="btn check_words">Check/Submit</button>
@@ -126,64 +115,10 @@
 
         <!-- POST GAME / SCORES -->
         <div class="scoreboard container-fluid d-flex justify-content-center mt-3 mt-md-4 d-none">
-            <div class="d-flex flex-wrap justify-content-start">
-                <div class="card col-12 col-sm-6 col-md-4">
-                    <div class="card-body bg-dark text-white">
-                        <h5 class="card-title">Player 1</h5>
-                        <ul class="list-group">
-                            <li class="list-group-item">WORD</li>
-                            <li class="list-group-item">WORD</li>
-                            <li class="list-group-item">WORD</li>
-                            <li class="list-group-item">WORD</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card col-12 col-sm-6 col-md-4">
-                    <div class="card-body bg-dark text-white">
-                        <h5 class="card-title">Player 2</h5>
-                        <ul class="list-group">
-                            <li class="list-group-item">WORD</li>
-                            <li class="list-group-item">WORD</li>
-                            <li class="list-group-item">WORD</li>
-                            <li class="list-group-item">WORD</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card col-12 col-sm-6 col-md-4">
-                    <div class="card-body bg-dark text-white">
-                        <h5 class="card-title">Player 3</h5>
-                        <ul class="list-group">
-                            <li class="list-group-item">WORD</li>
-                            <li class="list-group-item">WORD</li>
-                            <li class="list-group-item">WORD</li>
-                            <li class="list-group-item">WORD</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card col-12 col-sm-6 col-md-4">
-                    <div class="card-header bg-dark text-white fs-5 fw-bold">Player 4</div>
-                    <div class="card-body p-2">
-                        <ul class="list-group w-100">
-                            <li class="list-group-item">BIGWORD</li>
-                            <li class="list-group-item">WORD</li>
-                            <li class="list-group-item">VVBIGWORD</li>
-                            <li class="list-group-item">WORD</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card col-12 col-sm-6 col-md-4">
-                    <div class="card-body bg-dark text-white">
-                        <h5 class="card-title">Player 5</h5>
-                        <ul class="list-group">
-                            <li class="list-group-item">WORD</li>
-                            <li class="list-group-item">WORD</li>
-                            <li class="list-group-item">WORD</li>
-                            <li class="list-group-item">WORD</li>
-                        </ul>
-                    </div>
-                </div>
+            <div class="d-flex flex-column">
+                <div class="score-lists d-flex flex-wrap justify-content-start"></div>
+                <button class="btn play-again">PLAY AGAIN</button>
             </div>
-            <button class="btn play-again">PLAY AGAIN</button>
         </div>
     </main>
 

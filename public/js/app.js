@@ -1,3 +1,7 @@
+const display_name = document.querySelector('#displayName');
+const save_name = document.querySelector('#saveName');
+const user_name = document.querySelector('#userName');
+const name_modal = document.querySelector('#nameModal');
 const pregame = document.querySelector('.pregame')
 const gamebox = document.querySelector('.gamebox')
 const loader = document.querySelector('.loader')
@@ -22,10 +26,24 @@ var userListData = []
 var res
 var gameTime = 10
 
-const userName = localStorage.getItem("userName");
+userName = localStorage.getItem("userName");
+if (userName == null) {
+    var modal = new bootstrap.Modal(name_modal);
+    modal.show();
+}
+else {
+    display_name.innerHTML = userName;
+}
+
 const roomName = document.location.pathname.substr(6);
 
 socket = io();
+
+save_name.addEventListener('click', (e) => {
+    userName = user_name.value;
+    localStorage.setItem('userName', userName);
+    display_name.innerHTML = userName;
+});
 
 // PREGAME
 startGame.addEventListener('click', (e) => {
@@ -58,7 +76,7 @@ letters.forEach(l => l.addEventListener('click', (e) => {
 add_button.addEventListener('click', (e) => {
     // Word validation
     if (current_word.value.length < 3) {
-        error_message.innerText = "Word must be 3 letters or longer"
+        // error_message.innerText = "Word must be 3 letters or longer"
         return
     }
     else if (word_list_data.includes(current_word.value)) {
@@ -67,12 +85,14 @@ add_button.addEventListener('click', (e) => {
     }
 
     // Clear any error messages
-    error_message.innerText = ""
+    // error_message.innerText = ""
 
     // Create li
     const li = document.createElement('li')
     li.classList.add('word_in_list')
     li.classList.add('list-group-item')
+    li.classList.add('d-flex')
+    li.classList.add('justify-content-between')
     word_list_data.push(current_word.value)
     li.innerHTML = current_word.value
 
@@ -199,14 +219,14 @@ function gotoGamePage() {
 // Goto score page
 function loadScorePage() {
     gamebox.classList.add('d-none')
-    loader.classList.remove('d-none')
+    // loader.classList.remove('d-none')
     gameState = 2
     socket.emit('submit', word_list_data)
 }
 
 // Ends loader to reveal scores
 function showScores() {
-    loader.classList.add('d-none')
+    // loader.classList.add('d-none')
     scoreboard.classList.remove('d-none')
 }
 
@@ -215,9 +235,14 @@ function update_scoreboard(userWordDicts) {
     scoreLists.innerHTML = '';
     Object.keys(userWordDicts).forEach(k => {
         var wordDict = userWordDicts[k];
-        var userName = document.createElement('h3');
+        var userNameHeading = document.createElement('h5');
+        userNameHeading.classList.add('class-title');
         var score_list = document.createElement('ul');
+        score_list.classList.add('list-group')
         var container = document.createElement('div');
+        container.classList.add('card', 'col-12', 'col-sm-6', 'col-md-4');
+        var card_body = document.createElement('div');
+        container.classList.add('card-body', 'bg-dark', 'text-white');
 
         good_words = Object.keys(wordDict).filter(word => wordDict[word] == true)
         bad_words = Object.keys(wordDict).filter(word => wordDict[word] == false)
@@ -235,11 +260,10 @@ function update_scoreboard(userWordDicts) {
 
         good_words.forEach(w => {
             li = document.createElement('li')
-            li.classList.add('green')
+            li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'text-success')
             li.innerText = w
 
             span = document.createElement('span')
-            span.classList.add('right-float')
             span.innerText = "+" + w.length
             total_score += w.length
 
@@ -249,11 +273,10 @@ function update_scoreboard(userWordDicts) {
 
         bad_words.forEach(w => {
             li = document.createElement('li')
-            li.classList.add('red')
+            li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'text-danger')
             li.innerText = w
 
             span = document.createElement('span')
-            span.classList.add('right-float')
             span.innerText = "-1"
             total_score -= 1
 
@@ -261,12 +284,11 @@ function update_scoreboard(userWordDicts) {
             score_list.appendChild(li)
         })
 
-        userName.innerText = k + ": " + total_score;
+        userNameHeading.innerText = k + ": " + total_score;
 
-        container.classList.add('score-contianer');
-        score_list.classList.add('score-list');
-        container.appendChild(userName);
-        container.appendChild(score_list);
+        card_body.appendChild(userNameHeading);
+        card_body.appendChild(score_list);
+        container.appendChild(card_body);
 
         scoreLists.appendChild(container);
     })
