@@ -76,16 +76,18 @@ letters.forEach(l => l.addEventListener('click', (e) => {
 add_button.addEventListener('click', (e) => {
     // Word validation
     if (current_word.value.length < 3) {
-        // error_message.innerText = "Word must be 3 letters or longer"
+        error_message.innerText = "Word must be 3 letters or longer"
+        error_message.hidden = false;
         return
     }
     else if (word_list_data.includes(current_word.value)) {
         error_message.innerText = "Word already added to list"
+        error_message.hidden = false;
         return
     }
 
     // Clear any error messages
-    // error_message.innerText = ""
+    error_message.hidden = true;
 
     // Create li
     const li = document.createElement('li')

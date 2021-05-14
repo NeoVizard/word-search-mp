@@ -3,7 +3,7 @@ const http = require('http');
 const express = require('express');
 const cors = require('cors');
 const socketio = require('socket.io');
-const { createRoom, refreshRoomLetters, roomExists, getRoomLetters, deleteRoom, addUser, getUsers, ifWordDictsUpdated, removeUser, addWordList, getWordDicts, resetWordDicts } = require('./rooms');
+const { createRoom, refreshRoomLetters, roomExists, getRoomLetters, getRoomSettings, deleteRoom, addUser, getUsers, ifWordDictsUpdated, removeUser, addWordList, getWordDicts, resetWordDicts } = require('./rooms');
 
 const app = express();
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));

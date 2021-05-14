@@ -2,15 +2,18 @@ const { checkWords, getLetters } = require('./game');
 
 const rooms = {};
 const roomToLetters = {};
+const roomSettings = {};
 const users = [];
 
 // Create room
-function createRoom(roomName) {
+function createRoom(roomName, private = false, password = "") {
     if (roomName in rooms) {
         return false;
     }
     else {
         rooms[roomName] = [];
+        setting = { "private": private, "password": password };
+        roomSettings[roomName] = setting;
         roomToLetters[roomName] = getLetters();
         return true;
     }
@@ -33,10 +36,17 @@ function getRoomLetters(roomName) {
     return roomToLetters[roomName];
 }
 
+// Get settings of a room
+function getRoomSettings(roomName) {
+    return roomSettings[roomName];
+}
+
 // Delete room
 function deleteRoom(roomName) {
     if (roomName in rooms) {
         delete rooms[roomName];
+        delete roomToLetters[roomName];
+        delete roomSettings[roomName];
     }
 }
 
@@ -119,4 +129,4 @@ function resetWordDicts(roomName) {
     }
 }
 
-module.exports = { createRoom, refreshRoomLetters, roomExists, getRoomLetters, deleteRoom, addUser, getUsers, ifWordDictsUpdated, removeUser, addWordList, getWordDicts, resetWordDicts }
+module.exports = { createRoom, refreshRoomLetters, roomExists, getRoomLetters, getRoomSettings, deleteRoom, addUser, getUsers, ifWordDictsUpdated, removeUser, addWordList, getWordDicts, resetWordDicts }

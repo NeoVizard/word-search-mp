@@ -4,7 +4,7 @@ const name_modal = document.querySelector('#nameModal');
 const display_name = document.querySelector('#displayName');
 const save_name = document.querySelector('#saveName');
 const create_room = document.querySelector('#createRoom');
-// const join_room = document.querySelector('.join-room');
+const join_room = document.querySelector('#joinRoom');
 var guest_name;
 var userName;
 
@@ -34,4 +34,8 @@ create_room.addEventListener('click', (e) => {
     xhttp.open('POST', '/room');
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send( `{"roomName": "${room_name.value}"}` );
+});
+
+join_room.addEventListener('click', (e) => {
+    document.location.pathname = '/room/' + room_name.value
 });
